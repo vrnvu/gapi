@@ -29,7 +29,12 @@ func NewServer() Server {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/employees", a.fetchEmployees).Methods(http.MethodGet)
+
+	// We capture name and define a valid regex condition
 	r.HandleFunc("/employee/{name:[a-z]+}", a.fetchEmployee).Methods(http.MethodGet)
+
+
+	r.HandleFunc("/employee", a.createEmployee).Methods(http.MethodPost)
 
 	a.router = r
 	return a
@@ -52,7 +57,6 @@ func (a *api) fetchEmployees(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *api) fetchEmployee(w http.ResponseWriter, r *http.Request) {
-
 	// Returns values captured in the request URL
 	// vars is a dictionary whose key-value pairs are variables
 	vars := mux.Vars(r)
@@ -62,4 +66,19 @@ func (a *api) fetchEmployee(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("debug:", employee)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(employee)
+}
+
+
+func (a *api) createEmployee(w http.ResponseWriter, r *http.Request) {
+	// curl --header "Content-Type: application/json" --request POST --data '{"name":"xyz","salary":1500, "sales":30}' http://localhost:8080/employee
+	// We attempt to unmarshall our r.Body into an Employee
+	var employee Employee
+	err := json.NewDecoder(r.Body).Decode(&employee)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode("Error unmarshalling request body")
+		return
+	}
+	fmt.Println("debug:", employee)
+	w.WriteHeader(http.StatusCreated)
 }
