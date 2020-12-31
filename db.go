@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"errors"
 	"io/ioutil"
 	"os"
 )
@@ -69,4 +70,13 @@ func Equals(xs, ys []Employee) bool {
 	}
 
 	return true
+}
+
+func FindEmployee(name string, employees []Employee) (*Employee, error) {
+	for _, e := range employees {
+		if e.Name == name {
+			return &e, nil
+		}
+	}
+	return nil, errors.New("not found")
 }
