@@ -9,6 +9,7 @@ import (
 
 
 // Fields must start with capital letters to be exported
+// Name is id
 type Employee struct {
 	Name string `json:"name"`
 	Salary int `json:"salary"`
@@ -47,4 +48,25 @@ func WriteEmployees(employees []Employee) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+// Return true if both slices contain the same employees
+func Equals(xs, ys []Employee) bool {
+	if len(xs) != len(ys) {
+		return false
+	}
+
+	m := make(map[string]bool)
+
+	for _, x := range xs {
+		m[x.Name] = true
+	}
+
+	for _, y := range ys {
+		if _, exists := m[y.Name]; !exists {
+			return false
+		}
+	}
+
+	return true
 }
