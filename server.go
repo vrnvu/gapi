@@ -1,18 +1,15 @@
 package main
 
+// Is it a good idea to use mux?
+// Future API requirements auth and cors
+// We could use psql, mdb or json files
+// I like json files for starters
 import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 	"encoding/json"
 )
-
-// Fields must start with capital letters to be exported
-type Employee struct {
-	Name string `json:"name"`
-	Salary int `json:"salary"`
-	Sales int `json:"sales"`
-}
 
 // NOTE I don't like this api design
 type api struct {
