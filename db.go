@@ -8,8 +8,7 @@ import (
 	"os"
 )
 
-// Fields must start with capital letters to be exported
-// Name is id
+// Employee example
 type Employee struct {
 	Name   string `json:"name"`
 	Salary int    `json:"salary"`
@@ -18,6 +17,7 @@ type Employee struct {
 
 const file = "employees.json"
 
+// ReadEmployees returns the list of all current employees in db
 func ReadEmployees() []Employee {
 	jsonFile, err := os.Open(file)
 	defer jsonFile.Close()
@@ -40,6 +40,7 @@ func ReadEmployees() []Employee {
 	return employees
 }
 
+// WriteEmployees overwrites the list of employees in db with the arg
 func WriteEmployees(employees []Employee) {
 	toWrite, _ := json.Marshal(employees)
 
@@ -50,7 +51,7 @@ func WriteEmployees(employees []Employee) {
 	}
 }
 
-// Return true if both slices contain the same employees
+// Equals returns true if both slices contain the same employees
 func Equals(xs, ys []Employee) bool {
 	if len(xs) != len(ys) {
 		return false
@@ -71,6 +72,7 @@ func Equals(xs, ys []Employee) bool {
 	return true
 }
 
+// FindEmployee searches by name (ID) in a list
 func FindEmployee(name string, employees []Employee) (*Employee, error) {
 	for _, e := range employees {
 		if e.Name == name {
