@@ -6,14 +6,14 @@ import (
 
 // defered at every write operation to clear file
 func clearFile() {
-	WriteEmployees(make([]Employee,0))
+	WriteEmployees(make([]Employee, 0))
 }
 
 func TestReadEmpty(t *testing.T) {
 	// Assert employees.json is empty
 	// Then read empty slice
 	got := ReadEmployees()
-	want := make([]Employee, 0);
+	want := make([]Employee, 0)
 	if !Equals(got, want) {
 		t.Errorf("got %#v, wanted %#v", got, want)
 	}
@@ -21,7 +21,7 @@ func TestReadEmpty(t *testing.T) {
 
 func TestWriteOne(t *testing.T) {
 	defer clearFile()
-	e := Employee {"e0", 1000, 10}
+	e := Employee{"e0", 1000, 10}
 	employees := []Employee{e}
 	WriteEmployees(employees)
 	got := ReadEmployees()
@@ -33,7 +33,7 @@ func TestWriteOne(t *testing.T) {
 
 func TestAppendOne(t *testing.T) {
 	defer clearFile()
-	e := Employee {"e0", 1000, 10}
+	e := Employee{"e0", 1000, 10}
 	employees := []Employee{e}
 	WriteEmployees(employees)
 
@@ -50,9 +50,9 @@ func TestAppendOne(t *testing.T) {
 
 func TestFindEmployee(t *testing.T) {
 	defer clearFile()
-	e0 := Employee {"e0", 1000, 10}
-	e1 := Employee {"e1", 1000, 10}
-	e2 := Employee {"e2", 2000, 20}
+	e0 := Employee{"e0", 1000, 10}
+	e1 := Employee{"e1", 1000, 10}
+	e2 := Employee{"e2", 2000, 20}
 	nameToFind := "e1"
 	employees := []Employee{e0, e1, e2}
 	WriteEmployees(employees)

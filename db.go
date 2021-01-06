@@ -2,19 +2,18 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
 )
 
-
 // Fields must start with capital letters to be exported
 // Name is id
 type Employee struct {
-	Name string `json:"name"`
-	Salary int `json:"salary"`
-	Sales int `json:"sales"`
+	Name   string `json:"name"`
+	Salary int    `json:"salary"`
+	Sales  int    `json:"sales"`
 }
 
 const file = "employees.json"

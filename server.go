@@ -7,20 +7,26 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
-// NOTE I don't like this api design
-type api struct {
-	router http.Handler
-}
-
+// Server interface exposes a http.Handler
 type Server interface {
 	Router() http.Handler
 }
 
-// Create a new server with two endpoints for our employees
+// api is our router. The idea is to expose the interface and keep this struct private
+type api struct {
+	router http.Handler
+}
+
+func (a *api) Router() http.Handler {
+	return a.router
+}
+
+// NewServer creates an http.Handler server
 func NewServer() Server {
 	a := &api{}
 	r := mux.NewRouter()
@@ -39,19 +45,14 @@ func NewServer() Server {
 	return a
 }
 
-// NOTE unnecessary
-func (a *api) Router() http.Handler {
-	return a.router
-}
-
 // TODO mutex or some sort of sync
 func (a *api) ini(w http.ResponseWriter, r *http.Request) {
 	employees := []Employee{
-		Employee{"a", 100, 10},
-		Employee{"b", 200, 20},
-		Employee{"c", 300, 30},
-		Employee{"d", 400, 40},
-		Employee{"e", 500, 50},
+		{"a", 100, 10},
+		{"b", 200, 20},
+		{"c", 300, 30},
+		{"d", 400, 40},
+		{"e", 500, 50},
 	}
 	WriteEmployees(employees)
 }
